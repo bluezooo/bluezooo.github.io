@@ -1,0 +1,212 @@
+<html>
+
+<head>
+    <link href="css/shapes.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/icon.css" rel="stylesheet" type="text/css">
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <!-- <link href="css/bootstrap-glyphicons.css" rel="stylesheet" type="text/css"> -->
+    <link href="css/mdb.min.css" rel="stylesheet" type="text/css">
+
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/numeric-1.2.6.min.js"></script>
+    <script type="text/javascript" src="js/paper.js"></script>
+
+    <title> K-Means Clustering Simulation </title>
+</head>
+
+<body>
+
+    <style>
+        .btn-round {
+            border-radius: 50%;
+        }
+
+        .btn-lg {
+            width: 60px;
+            height: 60px;
+            padding: 10px 19px;
+            font-size: 25px;
+            line-height: 1.73;
+        }
+
+        .btn-round.btn-m {
+            width: 30px;
+            height: 30px;
+            font-size: 16px;
+            padding: 0px 4px;
+        }
+
+
+        .btn-round.btn-sm {
+            width: 34px;
+            height: 34px;
+        }
+
+        .btn-round.btn-xs {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* .btn:focus, */
+        .btn.focus {
+            outline: none;
+        }
+
+        .btn {
+            margin: 4px;
+        }
+
+        button {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            outline: none;
+            border: 0;
+            background: transparent;
+        }
+
+
+        .icon-white {
+            color: #ffffff;
+        }
+
+        .icon-black {
+            color: #000000;
+        }
+
+        .icon-blue {
+            color: blue;
+        }
+
+
+        /* Rules for sizing the icon. */
+        .material-icons.md-20 {
+            font-size: 20px;
+        }
+    </style>
+
+    <div class="container">
+
+        <div class="row">
+
+            <h1>K-Means Clustering Demo</h1>
+            <h4>
+                This web application shows demo of simple k-means algorithm for 2D points. Just select the number of
+                cluster and iterate.
+            </h4>
+
+            <p>
+                This app is ultimately interactive. You can add more points or select template points from the right
+                panel. More hints are available at the bottom.
+            </p>
+            <hr>
+            <div class="col-md-8">
+                <canvas id="myCanvas" height="600" width="720"></canvas>
+
+
+                <h3> Some hints for interactivity </h3>
+                <ul>
+                    <li>
+                        You can add more points by clicking or draggin in the area.
+                    </li>
+                    <li>
+                        Seed points (shown in empty circles) are randomly initalized. You can change by shift+dragging.
+                    </li>
+
+                </ul>
+
+            </div>
+            <div class="col-md-4">
+                <div class="col-xs-12" style="height:160px;"></div>
+
+                <!--http://www.kodingmadesimple.com/2015/06/twitter-bootstrap-circle-round-buttons-example.html -->
+                <!-- large buttons -->
+
+                <div class="row">
+
+                    <label>Draw a point distribution: </label> <br>
+                    <button type="button" class="btn btn-link" onclick="distributePoints(1)">1</button>
+                    <button type="button" class="btn btn-link" onclick="distributePoints(2)">2</button>
+                    <button type="button" class="btn btn-link" onclick="distributePoints(3)">3</button>
+                    <button type="button" class="btn btn-link" onclick="distributePoints(4)">4</button>
+                    <button type="button" class="btn btn-link" onclick="distributePoints(5)">5</button>
+                    <button type="button" class="btn btn-link" onclick="distributePoints(6)">6</button>
+
+                    <hr>
+                </div>
+
+                <div class="col-xs-12" style="height:30px;"></div>
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="button" onclick="restart()" class="btn btn-round btn-m"><i
+                                class="material-icons md-20">replay</i></button>
+                        <button type="button" onclick="iterate()" class="btn btn-round btn-lg"
+                            style="background-color: #0d47a1!important;"><span
+                                class="glyphicon glyphicon-play icon-white"></span></button>
+                        <button type="button" onclick="forward()" class="btn btn-round btn-m"><span
+                                class="glyphicon glyphicon-step-forward"></span></button>
+
+                        <h4>
+                            <p id="info_iter" style="text-align: center;">Iterations: 0</p>
+                        </h4>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-xs-12" style="width:10px;"></div>
+                        <button type="button" onclick="decreaseK()" class="btn icon-white btn-round btn-m"><span
+                                class="glyphicon glyphicon-minus icon-black"></span></button>
+                        <button type="button" onclick="increaseK()" class="btn icon-white btn-round btn-m"><span
+                                class="glyphicon glyphicon-plus icon-black"></span></button>
+
+                        <h2>
+                            <span id="num-layers">2</span>
+                            <span id="layers-label">clusters</span>
+                        </h2>
+                    </div>
+                </div>
+                <div class="col-xs-12" style="height:200px;"></div>
+                <hr>
+
+                <div class="row">
+                    <div class="col-md-10">
+                        <b>
+                            <h3>General Statistics:</h3>
+                        </b>
+                        <h4>
+
+                            <p id="info_deltaError">Delta position: 0</p>
+                        </h4>
+                    </div>
+                </div>
+                <hr>
+
+                <!--                <button type="button" class="btn btn-link" onclick="getPoints()">getPoints</button>-->
+
+            </div>
+        </div>
+
+        <hr>
+
+        <footer class="footer">
+            <div class="container">
+                <!--
+        <p class="text-muted">This app is developed by 
+            <a href="http://www.ceng.metu.edu.tr/~akifakkus/doku.php"  target="_blank">Mehmet Akif AKKUS</a> using paper.js.
+        </p>
+-->
+                <p class="text-muted">Middle East Technical University. Computer Engineering Department</p>
+
+            </div>
+        </footer>
+
+        <!-- Define inlined PaperScript associate it with myCanvas -->
+    </div>
+</body>
+
+<script type="text/paperscript" src="js/kmeans.js" canvas="myCanvas"></script>
+
+</html>
