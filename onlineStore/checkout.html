@@ -1,0 +1,43 @@
+<!-- checkout.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Same head content -->
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header with navigation -->
+        <main class="checkout-container">
+            <div class="checkout-steps">
+                <div class="breadcrumbs">
+                    <a href="/">Home</a> > Checkout
+                </div>
+                
+                <div class="payment-methods">
+                    <div class="payment-card">
+                        <h3>Credit Card</h3>
+                        <form>
+                            <div class="form-group">
+                                <label>Card Number</label>
+                                <input type="text" pattern="[0-9]{16}">
+                            </div>
+                            <!-- More form fields -->
+                        </form>
+                    </div>
+                    
+                    <div class="payment-card">
+                        <h3>PayPal</h3>
+                        <button class="paypal-btn">Continue with PayPal</button>
+                    </div>
+                </div>
+                
+                <div class="checkout-actions">
+                    <a href="/index.html" class="back-btn">← Back to Cart</a>
+                    <button class="confirm-btn">Confirm Payment</button>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

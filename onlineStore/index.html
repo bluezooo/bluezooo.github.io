@@ -1,0 +1,111 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <nav class="main-nav">
+                <a href="index.html" class="logo">Shop</a>
+                <div class="cart-wrapper" @mouseover="showCart = true" @mouseleave="showCart = false">
+                    <button class="cart-icon">
+                        🛒 ${{ cartTotal }}
+                        <span class="cart-badge">{{ cartItemCount }}</span>
+                    </button>
+                    <div class="shopping-cart" v-show="showCart">
+                        <div class="cart-items">
+                            <div v-for="(item, index) in cart" :key="index" class="cart-item">
+                                <!-- Product Thumbnail -->
+                                <img :src="item.thumbnail" class="cart-item-thumb" alt="Product Thumbnail">
+                    
+                                <!-- Product Name -->
+                                <div class="cart-item-details">
+                                    <span class="cart-item-name">{{ item.name }}</span>
+                    
+                                    <!-- Quantity Input -->
+                                    <div class="cart-item-quantity">
+                                        <label for="quantity">Qty:</label>
+                                        <input 
+                                            type="number" 
+                                            v-model.number="item.quantity" 
+                                            min="1" 
+                                            @change="saveCart"
+                                            class="quantity-input"
+                                        >
+                                    </div>
+                    
+                                    <div class="cart-item-prices">
+                                        <span class="cart-item-price">${{ item.price.toFixed(2) }} each</span>
+                                        <span class="cart-item-total">${{ (item.price * item.quantity).toFixed(2) }}</span>
+                                    </div>
+                                </div>
+                    
+                                <!-- Remove Button -->
+                                <button @click="removeFromCart(index)" class="remove-btn">×</button>
+                            </div>
+                        </div>
+                    
+                        <!-- Cart Total -->
+                        <div class="cart-total">
+                            <span>Total:</span>
+                            <span>${{ cartTotal }}</span>
+                        </div>
+                    
+                        <!-- Checkout Button -->
+                        <button class="checkout-btn" @click="checkout">Checkout</button>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <div class="container">
+            <aside class="categories">
+                <h3>Categories</h3>
+                <ul>
+                    <li v-for="category in categories" :key="category.id">
+                        <a href="#" @click.prevent="filterByCategory(category.id)">
+                            {{ category.name }}
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+
+            <main>
+                <nav class="breadcrumbs">
+                    <a href="/">Home</a>
+                    <span v-for="(crumb, index) in breadcrumbs" :key="index">
+                        > <a :href="crumb.link">{{ crumb.name }}</a>
+                    </span>
+                </nav>
+                <!-- Product Grid -->
+                <div class="product-grid">
+                    <div v-for="product in filteredProducts" :key="product.id" class="product-card">
+                        <img :src="product.thumbnail" @click="viewProduct(product)" class="product-thumb">
+                        <h3 @click="viewProduct(product)">{{ product.name }}</h3>
+                        <div class="category-tags">
+                            <span v-for="category in product.categories" :key="category" 
+                                class="category-tag" :data-category="category">
+                                {{ getCategoryName(category) }}
+                            </span>
+                        </div>
+                        <div class="price">${{ product.price }}</div>
+                        <button @click="addToCart(product)" class="add-btn">Add to Cart</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <footer>
+            <p>© 2025 My Shop. All rights reserved.</p>
+        </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+    <script src="data/products.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
