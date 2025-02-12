@@ -56,8 +56,23 @@
                             <span>${{ cartTotal }}</span>
                         </div>
                     
+                        <!-- Clear All Button -->
+                        <button 
+                            class="clear-btn" 
+                            @click="clearCart"
+                            :disabled="cart.length === 0"
+                        >
+                            Clear All
+                        </button>
+
                         <!-- Checkout Button -->
-                        <button class="checkout-btn" @click="checkout">Checkout</button>
+                        <button 
+                            class="checkout-btn" 
+                            @click="checkout"
+                            :disabled="cart.length === 0"
+                        >
+                            Checkout
+                        </button>
                     </div>
                 </div>
             </nav>
@@ -97,12 +112,10 @@
                         <button @click="addToCart(product)" class="add-btn">Add to Cart</button>
                     </div>
                 </div>
-            </main>
-        </div>
+        </main>
+    </div>
+    <footer-component></footer-component>
 
-        <footer>
-            <p>© 2025 My Shop. All rights reserved.</p>
-        </footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
     <script src="data/products.js"></script>

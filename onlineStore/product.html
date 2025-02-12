@@ -56,9 +56,23 @@
                             <span>Total:</span>
                             <span>${{ cartTotal }}</span>
                         </div>
+                        <!-- Clear All Button -->
+                        <button 
+                            class="clear-btn" 
+                            @click="clearCart"
+                            :disabled="cart.length === 0"
+                        >
+                            Clear All
+                        </button>
                     
-                        <!-- Checkout Button -->
-                        <button class="checkout-btn" @click="checkout">Checkout</button>
+                    <!-- Checkout Button -->
+                    <button 
+                        class="checkout-btn" 
+                        @click="checkout"
+                        :disabled="cart.length === 0"
+                    >
+                        Checkout
+                    </button>
                     </div>
                 </div>
             </nav>

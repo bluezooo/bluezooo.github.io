@@ -1,5 +1,5 @@
 
-// js/app.js (Full Version)
+
 const { createApp } = Vue;
 
 const mainApp = {
@@ -16,7 +16,10 @@ const mainApp = {
             ],
             products: products,
             cart: JSON.parse(localStorage.getItem('cart')) || [],
-            selectedCategory: null
+            selectedCategory: null,
+            searchQuery: '',
+            sortField: 'name',
+            sortDirection: 'asc'
         }
     },
     computed: {
@@ -37,6 +40,8 @@ const mainApp = {
         viewProduct(product) {
             window.location.href = `product.html?id=${product.id}`;
         },
+
+
         addToCart(product) {
             const existing = this.cart.find(item => item.id === product.id);
             if (existing) {
@@ -49,22 +54,26 @@ const mainApp = {
             }
             this.saveCart();
         },
-        removeFromCart(index) {
-            this.cart.splice(index, 1); // Remove item from cart
-            this.saveCart();
-        },
         saveCart() {
             localStorage.setItem('cart', JSON.stringify(this.cart));
         },
-        filterByCategory(categoryId) {
-            this.selectedCategory = categoryId;
-            this.updateBreadcrumbs();
-            window.history.replaceState(null, '', `?category=${categoryId}`);
+        removeFromCart(index) {
+            this.cart.splice(index, 1); // Remove item from cart
+            this.saveCart();
         },
         getCategoryName(categoryId) {
             const category = this.categories.find(c => c.id === categoryId);
             return category ? category.name : categoryId;
         },
+
+
+
+        filterByCategory(categoryId) {
+            this.selectedCategory = categoryId;
+            this.updateBreadcrumbs();
+            window.history.replaceState(null, '', `?category=${categoryId}`);
+        },
+
         updateBreadcrumbs() {
             if (this.selectedCategory) {
                 this.breadcrumbs = [{
@@ -75,9 +84,7 @@ const mainApp = {
                 this.breadcrumbs = [];
             }
         },
-        checkout() {
-            window.location.href = 'checkout.html';
-        },
+        
         loadCategoryFromURL() {
             const params = new URLSearchParams(window.location.search);
             const category = params.get('category');

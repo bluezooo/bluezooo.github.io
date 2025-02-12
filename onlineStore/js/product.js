@@ -24,6 +24,23 @@ createApp({
         }
     },
     methods: {
+        loadProduct() {
+            const params = new URLSearchParams(window.location.search);
+            const productId = parseInt(params.get('id'));
+            this.product = products.find(p => p.id === productId);
+            
+            if(this.product) {
+                this.breadcrumbs = [
+                    { 
+                        name: this.getCategoryName(this.product.categories[0]), 
+                        link: `index.html?category=${this.product.categories[0]}`
+                    },
+                    { name: this.product.name, link: '#' }
+                ];
+            }
+        },
+
+
         addToCart(product) {
             const existing = this.cart.find(item => item.id === product.id);
             if (existing) {
@@ -44,27 +61,18 @@ createApp({
             const category = this.categories.find(c => c.id === categoryId);
             return category ? category.name : categoryId;
         },
-        loadProduct() {
-            const params = new URLSearchParams(window.location.search);
-            const productId = parseInt(params.get('id'));
-            this.product = products.find(p => p.id === productId);
-            
-            if(this.product) {
-                this.breadcrumbs = [
-                    { 
-                        name: this.getCategoryName(this.product.categories[0]), 
-                        link: `index.html?category=${this.product.categories[0]}`
-                    },
-                    { name: this.product.name, link: '#' }
-                ];
-            }
-        },
-        filterByCategory(categoryId) {
-            window.location.href = `index.html?category=${categoryId}`;
+        clearCart() {
+            this.cart = [];
+            this.saveCart();
         },
         checkout() {
             window.location.href = 'checkout.html';
-        }
+        },
+
+        filterByCategory(categoryId) {
+            window.location.href = `index.html?category=${categoryId}`;
+        },
+
     },
     mounted() {
         this.loadProduct();
